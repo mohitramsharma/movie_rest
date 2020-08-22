@@ -1,0 +1,26 @@
+version: "3"
+services:
+  movie-rest:
+    image: movie-rest
+    ports:
+      - "8090:8090"
+    networks:
+      - movie-rest-network
+    depends_on:
+      - mysql-standalone-container
+
+  mysql-standalone-container:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    networks:
+      - movie-rest-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=root
+
+
+
+networks:
+  movie-rest-network:
+    driver: bridge
