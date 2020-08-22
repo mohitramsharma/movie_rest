@@ -49,15 +49,16 @@ public class MovieServiceImpl implements MovieService {
     public Movie addMovie(Movie movie) {
         // Check if category already exists
         if (movie.getCategory()!=null){
-            Optional<Category> oldCategory = categoryRepository.findById(movie.getCategory().getId());
+            Optional<Category> oldCategory = categoryRepository.findByNameIgnoreCase(movie.getCategory().getName());
             if (oldCategory.isPresent()){
                 movie.setCategory(oldCategory.get());
             }else {
+                movie.setCategory(categoryRepository.save(movie.getCategory()));
                 LOGGER.info(NEW_CATEGORY_CREATED);
             }
         }
 
-        Optional<Movie> movieWrapper =Optional.of(movieRepository.save(movie));
+        Optional<Movie> movieWrapper = Optional.ofNullable(movieRepository.save(movie));
         if (movieWrapper.isPresent()){
             return movieWrapper.get();
         }else {

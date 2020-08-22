@@ -19,7 +19,7 @@ public interface CategoryRepository extends CrudRepository<Category,Integer> {
     @Override
     Category save(Category category);
 
-    Category findByName(String name);
+    Optional<Category> findByNameIgnoreCase(String name);
 
     @Override
     void deleteById(Integer id);
